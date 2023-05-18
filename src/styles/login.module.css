@@ -1,0 +1,52 @@
+.loginimage{
+    display: flex;
+      align-items:center;
+      width: 75%;
+      height: 100%;
+      justify-content: center;
+      
+}
+
+.GridImage{
+    width: 100%;
+    height: 70%;
+    background-color:#1976d2;
+}
+
+.GridImage2{
+    background-color: #1976d2;
+    padding: 25px;
+    color: white;
+}
+.loginpage{
+    width: 100%;
+    padding: 60px 30px;
+    display: flex;
+    justify-content: center;
+}
+.validateform{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+}
+.login{
+    text-align: center;
+    color: #007bff;
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+.textField{
+    padding: 10px 10px 10px 0px;
+    font-family: "Roboto", sans-serif;
+}
+.forgotPassword{
+    display: flex;
+    align-items:center;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    padding-top: 60px;
+}
+.sendotp{
+    margin-top: 25px;
+}
