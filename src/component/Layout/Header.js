@@ -15,11 +15,13 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useState } from 'react';
 import style from '../Layout/Header.module.scss'
 import { useRouter } from 'next/router';
+import SnackBar from '../SnackBar';
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard'];
 export default function Header() {
   const [anchorElNav, setAnchorElNav] = useState('');
   const [anchorElUser, setAnchorElUser] = useState('');
+  const [snackbarState, setSnackbarState] = useState({ open: false });
   const { push, pathname } = useRouter()
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -30,7 +32,7 @@ export default function Header() {
 
   const handleCloseNavMenu = (pathname) => {
     if (pathname === 'profile') {
-      push('/')
+      push('/profile')
     } else if (pathname === 'Tasks') {
       push('/task')
     } else if (pathname === 'Plan') {
@@ -45,6 +47,14 @@ export default function Header() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+  const Logout =() => {
+    setSnackbarState({
+      open: true,
+      message:"Logout successfully",
+      severity: "success",
+    }); 
+    push('/')
+  }
 
   return (
     <React.Fragment>
@@ -163,13 +173,7 @@ export default function Header() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}
               >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-
-                ))}
-                <MenuItem onClick={() => push('/')}>
+                <MenuItem onClick={Logout}>
                   <Typography textAlign="center">Logout</Typography>
                 </MenuItem>
               </Menu>
@@ -177,6 +181,12 @@ export default function Header() {
           </Toolbar>
         </Container>
       </AppBar>
+      <SnackBar
+        open={snackbarState.open}
+        message={snackbarState.message}
+        severity={snackbarState.severity}
+        onClose={()=>setSnackbarState({ open: false })}
+      />
     </React.Fragment>
   );
 }

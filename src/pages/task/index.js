@@ -8,6 +8,7 @@ import TocOutlinedIcon from '@mui/icons-material/TocOutlined';
 import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
 import GridOnIcon from '@mui/icons-material/GridOn';
 import SegmentIcon from '@mui/icons-material/Segment';
+import BasicTable from '@/component/TaskList/tasklist';
 const task = () => {
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
@@ -23,7 +24,6 @@ const task = () => {
         <Box component="div" className={style.taskpage} >
             <Grid container rowSpacing={1}>
                 <Grid container xs={12}>
-
                     <Grid item xs={6}>  <Box component="h3" > Tasks  ›  Timesheet  ›
                         My Timesheet
                     </Box>
@@ -34,7 +34,7 @@ const task = () => {
                     </Grid>
                 </Grid>
                 <Grid item xs={6}>
-                    <Tabs
+                    {/* <Tabs
                         value={value}
                         onChange={handleChange}
                         indicatorColor="secondary"
@@ -46,13 +46,12 @@ const task = () => {
                         <Tab icon={<ViewWeekTwoToneIcon/>}  iconPosition="start" label="Task board" {...a11yProps(1)} />
                         <Tab icon={<GridOnIcon/>} iconPosition="start" label="Timesheet" {...a11yProps(2)} />
                         <Tab icon={<SegmentIcon/>} iconPosition="start" label="Task bundles" {...a11yProps(3)} />
-                    </Tabs>
+                    </Tabs> */}
                 </Grid>
                 <Grid item xs={6}>
-                    <p>4</p>
                 </Grid>
             </Grid>
-            <TabPanel value={value} index={0} dir={theme.direction}>
+            {/* <TabPanel value={value} index={0} dir={theme.direction}>
                 Item One
             </TabPanel>
             <TabPanel value={value} index={1} dir={theme.direction}>
@@ -60,8 +59,9 @@ const task = () => {
             </TabPanel>
             <TabPanel value={value} index={2} dir={theme.direction}>
                 Item Three
-            </TabPanel>
-        </Box>
+            </TabPanel> */}
+            <BasicTable/>
+                    </Box>
 
     )
 }

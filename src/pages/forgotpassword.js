@@ -1,11 +1,14 @@
 import { Box, Button, Grid, Paper,TextField, Typography } from '@mui/material'
-import React from 'react';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Style from '../styles/login.module.css'
 import { useRouter } from 'next/router';
+import axios from '../utils/axios'
+import SnackBar from '@/component/SnackBar';
 const ForgotPassword = () => {
   const router=useRouter()
+  const [snackbarState, setSnackbarState] = useState({ open: false });
   const validationSchema = Yup.object({
     email: Yup
       .string('Enter your email')
@@ -17,13 +20,41 @@ const ForgotPassword = () => {
       email: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-     console.log(values)
-     router.push('/')
-    },
-  });
+    onSubmit: (values) => handleSubmit(values) });
+
+  const handleSubmit = (value) => {
+    console.log(value)
+    const userData = {
+      email: value.email,
+    }
+    axios.post( "api/auth/forgotPassword", userData)
+    .then((response) => {
+      console.log(response)
+      if(response.data.flag)
+      {
+        setSnackbarState({
+          open: true,
+          message:response.data.message,
+          severity: "success",
+        }); 
+        router.push('/')
+      }else{
+        setSnackbarState({
+          open: true,
+          message:response.data.message,
+          severity: "error",
+        }); 
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+       
+
+  }
   
   return (
+    <>
     <Box  className={Style.forgotPassword}>
     <Paper elevation={4} >
     <Grid container >
@@ -47,13 +78,21 @@ const ForgotPassword = () => {
         />
        
         <Button color="primary" variant="contained"  className={Style.sendotp} fullWidth type="submit" >
-          SEND OTP
+          SEND MAIL
         </Button>
       </form>
     </Grid>
   </Grid>
   </Paper>
+  
   </Box>
+  <SnackBar
+  open={snackbarState.open}
+  message={snackbarState.message}
+  severity={snackbarState.severity}
+  onClose={()=>setSnackbarState({ open: false })}
+/>
+</>
 
   )
 }
