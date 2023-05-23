@@ -1,17 +1,11 @@
-import LoginUser from '@/component/LoginUser'
-import Head from 'next/head'
+import React from 'react'
+import Layout from "@/component/Layout/Auth/index"
 
-
-export default function Home() {
+const Home = () => {
   return (
-    <>
-      <Head>
-        <title>Time Sheet</title>
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <div className='mainpage'>
-      <LoginUser/>
-      </div>
-         </>
+    <Layout title="Dashboard">
+      <div>Dashboard</div>
+    </Layout>
   )
 }
+export default Home;

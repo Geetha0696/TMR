@@ -1,20 +1,17 @@
-import { Fragment, useEffect, useState } from "react";
-import Context from "./context";
+import { Fragment, useEffect, useState, createContext } from "react";
+const Context = createContext();
 
 export default function AppProvider({ children }) {
     const [auth, setAuth] = useState(false);
-    const [ads, SetAds] = useState([]);
-    const [paymetType, setpaymetType] = useState('');
-    const [companydetails, setCompanydetails] = useState('');
-    const [carddetails, setCarddetails] = useState({});
-    const [artDetails, setArtDetails] = useState({});
-    const [obj, SetObj] = useState({});
+    const [token, setToken] = useState({});
+
     useEffect(() => {
-        let data = localStorage.getItem('auth');
+        let data = localStorage.getItem('userToken');
         if (data) {
             setAuth(Boolean(data))
         }
     }, [])
+
     return (
         <Fragment>
             <Context.Provider
@@ -22,18 +19,8 @@ export default function AppProvider({ children }) {
                     {
                         auth,
                         setAuth,
-                        SetAds,
-                        ads,
-                        paymetType,
-                        setpaymetType,
-                        companydetails,
-                        setCompanydetails,
-                        carddetails,
-                        setCarddetails,
-                        artDetails,
-                        setArtDetails,
-                        SetObj,
-                        obj
+                        token,
+                        setToken,
                     }
                 }
             >

@@ -1,8 +1,11 @@
 import React from 'react'
+import Layout from "@/component/Layout/Auth/index"
 
 const TaskFile = () => {
   return (
-    <div>index</div>
+    <Layout title="Dashboard">
+      <div>Dashboard</div>
+    </Layout>
   )
 }
 export default TaskFile;

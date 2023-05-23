@@ -1,0 +1,27 @@
+.appbar {
+    background-color: #fff !important;
+    color: #1F2226 !important;
+    height: 70px;
+}
+
+.active {
+    font-weight: 400;
+    color: #e43958 !important;
+    border-bottom: 2px solid #e43958;
+}
+
+.menulist {
+    color: #000;
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: 400;
+    text-transform: capitalize;
+    padding: 5px 10px;
+    text-decoration: none;
+}
+
+.breadcrumbs {
+    padding: 10px 5px;
+    font-size: 20px;
+    font-weight: 500;
+}

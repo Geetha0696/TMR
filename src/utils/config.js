@@ -1,5 +1,5 @@
 const _config = {
-    API_URL: process.env.NEXT_PUBLIC_API_URL,
+    API_URL: process.env.api_url,
 }
 
 const config = { ..._config }

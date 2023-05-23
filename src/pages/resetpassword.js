@@ -5,11 +5,11 @@ import * as Yup from 'yup';
 import Style from '../styles/login.module.css'
 import { useRouter } from 'next/router';
 import axios from '../utils/axios'
-import SnackBar from '@/component/SnackBar';
+import { toast } from "react-toastify";
+
 const ResetPassword = () => {
   const router = useRouter();
   const [activation, setActivation] = useState('')
-  const [snackbarState, setSnackbarState] = useState({ open: false });
   useEffect(() => {
     const token = router.query.token;
     const key = router.query.key;
@@ -45,20 +45,11 @@ const ResetPassword = () => {
     }
     axios.post("api/auth/resetPassword", userData)
       .then((response) => {
-        if(response.data.flag)
-        {
-          setSnackbarState({
-            open: true,
-            message:response.data.message,
-            severity: "success",
-          }); 
-          router.push('/task')
-        }else{
-          setSnackbarState({
-            open: true,
-            message:response.data.message,
-            severity: "error",
-          }); 
+        if (response.data.flag) {
+          toast.success(response.data.message);
+          router.push('/')
+        } else {
+          toast.error(response.data.message)
         }
       })
       .catch((error) => {
@@ -106,12 +97,6 @@ const ResetPassword = () => {
           </Grid>
         </Grid>
       </Paper>
-      <SnackBar
-  open={snackbarState.open}
-  message={snackbarState.message}
-  severity={snackbarState.severity}
-  onClose={()=>setSnackbarState({ open: false })}
-/>
     </Box>
 
   )
