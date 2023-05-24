@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { Box } from '@mui/material';
-import { DataGrid } from '@mui/x-data-grid';
+import { Box, Button } from '@mui/material';
+import { DataGrid, GridAddIcon } from '@mui/x-data-grid';
+import NewTask from './NewTask';
+import style from './style.module.css'
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 70, flex: 1 },
@@ -36,7 +38,10 @@ const rows = [
 ];
 
 export default function DataTable() {
+  const[open,setOpen]=React.useState(false)
   return (
+    <>
+    <Button className={style.addtask} onClick={()=>setOpen(true)}><GridAddIcon/>Add Task</Button>
     <Box
       sx={{
         height: 400,
@@ -50,6 +55,7 @@ export default function DataTable() {
         },
       }}
     >
+      
       <DataGrid
         rows={rows}
         columns={columns}
@@ -63,5 +69,7 @@ export default function DataTable() {
         sx={{ background: "#fff" }}
       />
     </Box>
+    <NewTask open={open} setOpen={setOpen}/>
+    </>
   );
 }
