@@ -1,22 +1,23 @@
 import * as React from 'react';
+import { Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 
 const columns = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'firstName', headerName: 'First name', width: 130 },
-  { field: 'lastName', headerName: 'Last name', width: 130 },
+  { field: 'id', headerName: 'ID', width: 70, flex: 1 },
+  { field: 'firstName', headerName: 'First name', width: 130, flex: 1 },
+  { field: 'lastName', headerName: 'Last name', width: 130, flex: 1 },
   {
     field: 'age',
     headerName: 'Age',
-    type: 'number',
     width: 90,
+    flex: 1
   },
   {
     field: 'fullName',
     headerName: 'Full name',
     description: 'This column has a value getter and is not sortable.',
     sortable: false,
-    width: 160,
+    width: 160, flex: 1,
     valueGetter: (params) =>
       `${params.row.firstName || ''} ${params.row.lastName || ''}`,
   },
@@ -36,7 +37,19 @@ const rows = [
 
 export default function DataTable() {
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <Box
+      sx={{
+        height: 400,
+        width: '100%',
+        '& .MuiDataGrid-columnHeaders': {
+          backgroundColor: '#000033',
+          color: '#fff'
+        },
+        '& .MuiDataGrid-columnHeaders .MuiCheckbox-root': {
+          color: '#fff'
+        },
+      }}
+    >
       <DataGrid
         rows={rows}
         columns={columns}
@@ -47,7 +60,8 @@ export default function DataTable() {
         }}
         pageSizeOptions={[5, 10]}
         checkboxSelection
+        sx={{ background: "#fff" }}
       />
-    </div>
+    </Box>
   );
 }
