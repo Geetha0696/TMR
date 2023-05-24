@@ -1,0 +1,13 @@
+.addtask{
+    background-color: black;
+    color: white;
+}
+.modal{
+    position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400;
+  border: '2px solid #000';
+  background-color: white;
+  color: black;
+}

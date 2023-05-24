@@ -8,7 +8,7 @@ import style from '../style.module.css'
 import authRoute from "./authRoute";
 
 const Layout = ({ children, title, breadcrumbs = [] }) => {
-
+console.log(breadcrumbs)
     return (
         <>
             <Head>

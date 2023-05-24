@@ -50,9 +50,9 @@ export default function Header(props) {
 
     axios.post("/api/auth/logout", {}, config)
       .then((response) => {
+        console.log(response)
         if (response.data.flag) {
           toast.success(response.data.message);
-
           dispatch(removeToken());
           dispatch(removeUserInfo());
           router.push('/login')
@@ -103,16 +103,17 @@ export default function Header(props) {
                       display: { xs: 'block', md: 'none' },
                     }}
                   >
-                    {pages.map((page) => (
-                      <MenuItem key={page} onClick={handleCloseNavMenu}>
-                        <Typography textAlign="center">{page}</Typography>
+                      <MenuItem  onClick={()=>handleCloseNavMenu('dashboard')}>
+                        <Typography textAlign="center">Dashboard</Typography>
                       </MenuItem>
-                    ))}
+                      <MenuItem  onClick={()=>handleCloseNavMenu('timesheet')}>
+                        <Typography textAlign="center">Timesheet</Typography>
+                      </MenuItem>
                   </Menu>
                 </Box>
               </Grid>
               <Grid item xs={8} md={1}>
-                <Image alt="logo" src="/" width="60" height="60" />
+                <img alt="logo" src="https://media.licdn.com/dms/image/D560BAQEAwVvg9xub0Q/company-logo_200_200/0/1683302939061?e=2147483647&v=beta&t=7moSYA7ZVjZGph5kMM-5q9O8X-VE13jL9Vfya8rrdiw" width="40" height="40" />
               </Grid>
 
               <Grid item xs={10} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
