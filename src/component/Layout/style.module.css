@@ -16,12 +16,15 @@
     line-height: 1.2;
     font-weight: 400;
     text-transform: capitalize;
-    padding: 12px 10px;
+    padding: 5px 10px !important;
+    margin: 0 !important;
     text-decoration: none;
+    display: flex;
+    align-content: center;
 }
 
 .breadcrumbs {
-    padding: 10px 5px;
+    padding: 20px 10px;
     font-size: 20px;
     font-weight: 500;
 }

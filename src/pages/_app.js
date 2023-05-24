@@ -7,6 +7,8 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react';
 import AppProvider from '@/component/Context/AppProvider';
 
+import styles from '@/styles/global.module.css'
+
 export default function App({ Component, pageProps }) {
 
   const router = useRouter()
@@ -39,9 +41,9 @@ export default function App({ Component, pageProps }) {
 
           <AppProvider>
             {loading &&
-              <h1>
-                Loading...
-              </h1>
+              <div className={styles.loader}>
+                <div /><div /><div />
+              </div>
             }
             <Component {...pageProps} />
           </AppProvider>

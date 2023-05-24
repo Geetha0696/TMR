@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { setToken, setUserInfo } from '@/store/authSlice'
 
 import Layout from "@/component/Layout/NonAuth/index"
-import Style from '@/styles/login.module.css'
+import Style from './login.module.css'
 
 
 export default function Login() {

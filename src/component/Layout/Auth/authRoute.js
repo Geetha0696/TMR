@@ -14,7 +14,7 @@ export default function authRoute(Component, redirect = '/login', roleFlag = fal
         useEffect(() => {
             if (redirect) {
                 if (authToken == null && authToken == undefined) {
-                    router.push(redirect)
+                    router.push('/login')
                 } else if (roleFlag && !roleId.includes(userInfo.role_id)) {
                     router.push(redirect)
                 }

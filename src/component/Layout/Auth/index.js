@@ -21,11 +21,11 @@ console.log(breadcrumbs)
             </Head>
             <Header />
             <Toolbar className={style.appbar} sx={{ background: "#f0f3fa !important" }} />
-            <Container maxWidth="lg">
+            <Container maxWidth="xl">
                 <Breadcrumps breadcrumbs={breadcrumbs} />
+                <ToastContainer />
+                <main>{children}</main>
             </Container>
-            <ToastContainer />
-            <main>{children}</main>
         </>
     )
 }
