@@ -366,7 +366,7 @@ function TimesheetTable() {
           sx={{ background: "#fff" }}
         />
       </Box>
-      <NewTask open={open} setOpen={setOpen} />
+      <NewTask open={open} setOpen={setOpen} projectList={projectList} />
       <ViewTask open={viewOpen} setOpen={setViewOpen} data={viewData} />
     </>
   );

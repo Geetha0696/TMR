@@ -25,11 +25,15 @@
 }
 
 .title {
-    width: 600px;
+    width: 90%;
+    margin-top: 10px !important;
+    margin-bottom: 15px  !important;
 }
 
 .description {
-    width: 600px;
+    width: 90%;
+    margin-top: 15px !important;
+    margin-bottom: 20px  !important;
 }
 
 .container {

@@ -1,69 +1,61 @@
-import { Box, Button, Grid, MenuItem, Select, TextField } from '@mui/material';
-import { useState } from 'react';
+import { Autocomplete, Box, Button, FormControl, Grid, InputLabel, MenuItem, OutlinedInput, Select, TextField } from '@mui/material';
+import { useEffect, useState } from 'react';
 import style from './style.module.css'
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Modal from '../Modal'
 
 const NewTask = (props) => {
-    const { open, setOpen } = props
-    const [age, setAge] = useState('');
-
+    const {  projectList } = props
+    const hours = [];
+    const BillableOptions = [
+        { label: 'Billable', value: "billable" },
+        { label: 'Non-Billable', value: "non billable" },
+    ];
+    for (let i = 1; i <= 10; i++) {
+        let obj = { label: `${i}h`, value: i }
+        hours.push(obj);
+    }
     return (
-        <Modal {...props} title="New Task">
+        <Modal {...props} title="New Task" size={800}>
             <Grid container sm={12} className={style.gridBody}>
                 <Grid item sm={3} >
-                    <Box>Planned duration</Box>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value="1h"
+                    <Autocomplete
+                        options={hours}
+                        getOptionLabel={(option) => option.label}
+                        renderInput={(params) => <TextField {...params} label="Duration" />}
+                        sx={{ fontSize: "5px", mb: 1, width: '80%' }}
                         size='small'
-                        onChange={(e) => console.log(e.target.value)}
-                        className={style.dropdown}
-                    >
-                        <MenuItem selected value={1}>1h </MenuItem>
-                        <MenuItem value={2}>2h </MenuItem>
-                        <MenuItem value={3}>3h </MenuItem>
-                    </Select>
+                    />
                 </Grid>
 
                 <Grid item sm={3} >
-                    <div>Project</div>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={age}
+                    <Autocomplete
+                        options={projectList}
+                        getOptionLabel={(option) => option.name}
+                        renderInput={(params) => <TextField {...params} label="Project" />}
+                        sx={{ fontSize: "8px", mb: 2, width: '80%' }}
                         size='small'
-                        onChange={(e) => console.log(e.target.value)}
-                        className={style.dropdown}
-                    >
-                        <MenuItem selected value={1}> React  </MenuItem>
-                        <MenuItem value={2}>Node.js </MenuItem>
-                        <MenuItem value={3}>Next.js </MenuItem>
-                    </Select>
+
+                    />
                 </Grid>
                 <Grid item sm={2} >
-                    <div>Status</div>
-                    <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                    <Autocomplete
+                        options={BillableOptions}
+                        getOptionLabel={(option) => option.label}
+                        renderInput={(params) => <TextField {...params} label="Billable" />}
+                        sx={{ fontSize: "8px", mb: 2, width: '80%' }}
                         size='small'
-                        value={age}
-                        onChange={(e) => console.log(e.target.value)}
-                        className={style.dropdown}
-                    >
-                        <MenuItem selected value={1}>Billable </MenuItem>
-                        <MenuItem value={2}>Non Billable</MenuItem>
-                    </Select>
+
+                    />
                 </Grid>
                 <Grid item sm={4} >
-                    <div>Date</div>
                     <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
+                            label="Date"
                             value={new Date()}
                             format="dd-MM-yyyy"
-                            sx={{ fontSize: "8px", mb: 2, width: '100%' }}
+                            sx={{ fontSize: "8px", mb: 2, width: '80%' }}
                             maxDate={new Date()}
                             className='date-picker-input'
                         />
@@ -72,13 +64,11 @@ const NewTask = (props) => {
 
             </Grid>
 
-            < Grid item sm={12} >
-                <div>Title</div>
-                <TextField size='small' className={style.title} ></TextField>
+            < Grid item sm={12}  >
+                <TextField label="Title" size='small' className={style.title} ></TextField>
             </Grid>
-            < Grid item sm={12}>
-                <div>Description</div>
-                <TextField size='small' multiline rows={5} className={style.description}></TextField>
+            < Grid item sm={12}  >
+                <TextField label="Description" multiline rows={5} className={style.description}></TextField>
             </Grid>
             < Grid item xs={12} md={4} textAlign="end" mr={2} >
                 <Button variant="contained"  >Submit</Button>
