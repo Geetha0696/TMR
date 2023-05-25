@@ -2,7 +2,7 @@ import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Style from '../styles/login.module.css'
+import Style from '../styles/auth.module.css'
 import { useRouter } from 'next/router';
 import axios from '../utils/axios'
 import { toast } from "react-toastify";

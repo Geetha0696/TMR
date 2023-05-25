@@ -14,20 +14,23 @@
     justify-content: space-between;
     align-items: center;
     background-color: #F0F3FA;
-    border-color:#F0F3FA;
+    border-color: #F0F3FA;
 }
-.gridBody{
+
+.gridBody {
     display: flex;
     justify-content: space-around;
 }
-.title{
+
+.title {
     width: 600px;
 }
-.description{
+
+.description {
     width: 600px;
- 
 }
-.container{
+
+.container {
     display: flex;
     flex-direction: column;
     gap: 11px;
