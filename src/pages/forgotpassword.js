@@ -50,12 +50,12 @@ const ForgotPassword = () => {
       <Box className={Style.forgotPassword}>
         <Paper elevation={4} >
           <Grid container >
-            <Grid item sm={5} className={Style.GridImage2}>
+            <Grid item sm={5} sx={{ display: { xs: 'none', sm: 'block' } }}   className={Style.GridImage2}>
               <Image className={Style.GridImage} alt="logo" src="https://kiranworkspace.com/demo/projects/code-snippets/login/simple-login-form/img/welcome.svg" width="60" height="60" />
               <Typography component='h4' variant='h4' >Welcome back</Typography>
-              <Typography component='p' variant='p' >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsam, asperiores!</Typography>
+              <Typography component='p' variant='p' >TM</Typography>
             </Grid>
-            <Grid item sm={7} className={Style.loginpage}>
+            <Grid item  sm={7} xs={12} className={Style.loginpage}>
               <form className={Style.validateform} onSubmit={formik.handleSubmit}>
                 <Typography component='h3' variant='h4' className={Style.login} >Forgot Password</Typography>
                 <Typography component='p' variant='p' className={Style.textField} >Email</Typography>

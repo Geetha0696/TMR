@@ -75,3 +75,7 @@
     flex-direction: column;
     gap: 11px;
 }
+
+.dropdown{
+    min-width: 80px;
+}
