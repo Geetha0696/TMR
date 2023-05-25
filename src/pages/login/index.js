@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
-import { Box, Button, Grid, Paper, TextField, Typography } from '@mui/material'
+import { Box, Button, Grid, Paper, TextField, Typography, makeStyles ,} from '@mui/material'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import axios from '@/utils/axios'
@@ -13,7 +13,6 @@ import { setToken, setUserInfo } from '@/store/authSlice'
 
 import Layout from "@/component/Layout/NonAuth/index"
 import Style from '@/styles/auth.module.css'
-
 
 export default function Login() {
 
@@ -70,12 +69,12 @@ export default function Login() {
           <Box className={Style.loginimage}>
             <Paper elevation={4} >
               <Grid container >
-                <Grid item sm={5} className={Style.GridImage2}>
+                <Grid item sm={5} sx={{ display: { xs: 'none', sm: 'block' } }} className={Style.GridImage2}>
                   <Image className={Style.GridImage} alt="image" src="https://kiranworkspace.com/demo/projects/code-snippets/login/simple-login-form/img/welcome.svg" width="100" height="100" />
                   <Typography component='h4' variant='h4' >Welcome back</Typography>
-                  <Typography component='p' variant='p' >Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ipsam, asperiores!</Typography>
+                  <Typography component='p' variant='p' >TM</Typography>
                 </Grid>
-                <Grid item sm={7} className={Style.loginpage}>
+                <Grid item sm={7} xs={12} className={Style.loginpage}>
                   <form className={Style.validateform} onSubmit={formik.handleSubmit}>
                     <Typography component='h3' variant='h4' className={Style.login} >LOGIN</Typography>
                     <Typography component='p' variant='p' className={Style.textField} >Email</Typography>
@@ -94,7 +93,7 @@ export default function Login() {
                     />
                     <Typography component='p' variant='p' className={Style.textField} >Password</Typography>
                     <TextField
-                      id="password"
+                      id="standard-error-helper-text"
                       name="password"
                       type="password"
                       value={formik.values.password}
@@ -107,7 +106,7 @@ export default function Login() {
                         '& .MuiFormHelperText-root': { ml: '2px' }
                       }}
                     />
-                    <Link href='/forgotpassword' className={Style.textField}>Forgot password?</Link>
+                    <Link href='/forgotpassword' className={Style.textFieldForgotPassword}>Forgot password?</Link>
                     <Button color="primary" variant="contained" fullWidth type="submit">
                       Login
                     </Button>

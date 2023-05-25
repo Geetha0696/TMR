@@ -46,3 +46,7 @@
 .table_body tr:nth-child(even) {
     background-color: #ddd;
 }
+
+.dropdown {
+    min-width: 80px;
+}

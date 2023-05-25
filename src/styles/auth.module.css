@@ -27,7 +27,7 @@
 .validateform{
     display: flex;
     flex-direction: column;
-    width: 60%;
+    width: 80%;
 }
 .login{
     text-align: center;
@@ -36,7 +36,11 @@
     font-weight: bold;
 }
 .textField{
-    padding: 10px 10px 10px 0px;
+    padding: 0px 10px 10px 0px;
+    font-family: "Roboto", sans-serif;
+}
+.textFieldForgotPassword{
+    padding: 0px 10px 20px 0px;
     font-family: "Roboto", sans-serif;
 }
 .forgotPassword{
@@ -48,5 +52,5 @@
     padding-top: 60px;
 }
 .sendotp{
-    margin-top: 25px;
+    margin-top: 25px !important;
 }
