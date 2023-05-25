@@ -1,7 +1,6 @@
 import React from 'react'
 import authRoute from "./nonAuthRoute";
 import Head from 'next/head'
-import { ToastContainer } from 'react-toastify'
 
 const Layout = ({ children, title }) => {
 
@@ -15,7 +14,6 @@ const Layout = ({ children, title }) => {
                 />
                 <meta name='keywords' content={title} />
             </Head>
-            <ToastContainer />
             <main>{children}</main>
         </>
     )

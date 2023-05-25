@@ -24,7 +24,7 @@ export default function Breadcrump({ breadcrumbs }) {
 
 
                 {breadcrumbs.length > 0 ? breadcrumbs.map((item, index) => (
-                    <>
+                    <div key={index}>
                         {index != breadcrumbs.length - 1 ?
                             (<Link underline="hover" color="inherit" href={item.link}>
                                 {item.name}
@@ -32,7 +32,7 @@ export default function Breadcrump({ breadcrumbs }) {
                             (<Typography color="text.primary">
                                 {item.name}
                             </Typography>)}
-                    </>
+                    </div>
                 )) : ""}
             </Breadcrumbs>
         </Stack >

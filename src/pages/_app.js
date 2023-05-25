@@ -7,6 +7,8 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react';
 import AppProvider from '@/component/Context/AppProvider';
 
+import { ToastContainer } from 'react-toastify'
+
 import styles from '@/styles/global.module.css'
 
 export default function App({ Component, pageProps }) {
@@ -40,6 +42,7 @@ export default function App({ Component, pageProps }) {
         <PersistGate loading={null} persistor={persistor}>
 
           <AppProvider>
+            <ToastContainer />
             {loading &&
               <div className={styles.loader}>
                 <div /><div /><div />

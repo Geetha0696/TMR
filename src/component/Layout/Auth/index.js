@@ -1,7 +1,6 @@
 import React from 'react'
 import Head from 'next/head'
 import { Container, Toolbar } from '@mui/material'
-import { ToastContainer } from 'react-toastify'
 import Header from '../Header'
 import Breadcrumps from '../Breadcrumps'
 import style from '../style.module.css'
@@ -21,9 +20,8 @@ console.log(breadcrumbs)
             </Head>
             <Header />
             <Toolbar className={style.appbar} sx={{ background: "#f0f3fa !important" }} />
-            <Container maxWidth="xl">
+            <Container maxWidth="lg">
                 <Breadcrumps breadcrumbs={breadcrumbs} />
-                <ToastContainer />
                 <main>{children}</main>
             </Container>
         </>

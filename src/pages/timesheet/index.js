@@ -1,6 +1,5 @@
-import { Box, Grid, Tab, Tabs, Typography, useTheme } from '@mui/material'
 import React from 'react'
-import style from './style.module.scss'
+import { Box } from '@mui/material'
 import BasicTable from '@/component/TaskList/TaskList';
 import Layout from "@/component/Layout/Auth/index"
 
@@ -13,7 +12,7 @@ const Timesheet = () => {
 
     return (
         <Layout title="Timesheet" breadcrumbs={breadcrumbs}>
-            <Box component="div" className={style.taskpage} >
+            <Box component="div" >
                 <BasicTable />
             </Box>
         </Layout>

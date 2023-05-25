@@ -22,3 +22,8 @@ body {
   width: 100%;
   height: 100vh;
 }
+
+.date-picker-input .MuiInputBase-root {
+  height: 40px;
+  width: 90%;
+}
