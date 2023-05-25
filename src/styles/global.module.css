@@ -27,16 +27,56 @@
 }
 
 .loader div:nth-child(1) {
-    background: #FF9F1A;
+    background: var(--loader-color1);
     animation-delay: -0.40s;
 }
 
 .loader div:nth-child(2) {
-    background: #FED330;
+    background: var(--loader-color2);
     animation-delay: -0.20s;
 }
 
 .loader div:nth-child(3) {
-    background: #FFFA65;
+    background: var(--loader-color3);
     animation-delay: 0s;
+}
+
+.modalBox {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    justify-content: center;
+}
+
+.modalBoxInner {
+    position: absolute;
+    background-color: #fff;
+    border: none !important;
+    box-shadow: 0px 11px 15px -7px rgba(0, 0, 0, 0.2), 0px 24px 38px 3px rgba(0, 0, 0, 0.14), 0px 9px 46px 8px rgba(0, 0, 0, 0.12);
+    padding-left: 32px;
+    padding-right: 32px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+
+}
+
+.modalHeader {
+    text-align: end;
+    cursor: pointer;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    justify-content: space-between;
+}
+
+.modalHeader h3 {
+    margin: 0 !important;
+    font-size: 20px;
+    font-weight: 500;
 }
