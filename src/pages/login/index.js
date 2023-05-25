@@ -87,7 +87,10 @@ export default function Login() {
                       error={formik.touched.email && Boolean(formik.errors.email)}
                       helperText={formik.touched.email && formik.errors.email}
                       size="small"
-                      style={{ minHeight: '65px' }}
+                      sx={{
+                        minHeight: '65px',
+                        '& .MuiFormHelperText-root': { ml: '2px' }
+                      }}
                     />
                     <Typography component='p' variant='p' className={Style.textField} >Password</Typography>
                     <TextField
@@ -99,7 +102,10 @@ export default function Login() {
                       error={formik.touched.password && Boolean(formik.errors.password)}
                       helperText={formik.touched.password && formik.errors.password}
                       size="small"
-                      style={{ minHeight: '65px' }}
+                      sx={{
+                        minHeight: '65px',
+                        '& .MuiFormHelperText-root': { ml: '2px' }
+                      }}
                     />
                     <Link href='/forgotpassword' className={Style.textField}>Forgot password?</Link>
                     <Button color="primary" variant="contained" fullWidth type="submit">
