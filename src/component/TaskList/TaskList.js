@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { Box, Grid, Typography, TextField, Autocomplete, Button, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
-import { Search, Refresh, ExpandMore, Add } from '@mui/icons-material';
-import { DataGrid } from '@mui/x-data-grid';
+import { Search, Refresh, ExpandMore, Add, Visibility, BorderColor, Delete } from '@mui/icons-material';
+import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import axios from '@/utils/axios'
 import { YYYYMMDD } from "@/utils/common";
 import NewTask from './NewTask';
+import ViewTask from './ViewTask';
 import style from './style.module.css'
 
 function TimesheetTable() {
@@ -27,16 +28,6 @@ function TimesheetTable() {
     { label: 'Non-Billable', value: "non billable" },
   ];
 
-  const columns = useMemo(
-    () => [
-      { field: 'timesheet_date', headerName: 'Date', width: 60, flex: 1 },
-      { field: 'project', headerName: 'Project Name', valueGetter: (params) => params.row.project.project_name, width: 60, flex: 1 },
-      { field: 'timesheet_title', headerName: 'Title', width: 120, flex: 1 },
-      { field: 'timesheet_estimation', headerName: 'Estimation', width: 70, flex: 1 },
-      { field: 'timesheet_billable_type', headerName: 'Billable', width: 130, flex: 1 },
-      { field: 'user', headerName: 'User', valueGetter: (params) => params.row.user.first_name, width: 60, flex: 1 },
-    ], []);
-
   const { authToken } = useSelector((state) => state.auth)
   const [projectList, setProjectList] = useState([]);
   const [pageState, setPageState] = useState({
@@ -47,8 +38,11 @@ function TimesheetTable() {
     limit: 10,
   });
   const [filterFormData, setFilterFormData] = useState(filterForm);
-  const [open, setOpen] = useState(false)
-
+  const [open, setOpen] = useState(false);
+  const [viewOpen, setViewOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [viewData, setViewData] = useState({});
 
   const filterList = useCallback(() => {
     let { page, limit } = pageState
@@ -113,6 +107,79 @@ function TimesheetTable() {
       });
   }, [authToken]);
 
+  const viewApi = useCallback((id) => {
+    const headers = {
+      "Content-Type": "application/json",
+      token: authToken,
+    };
+    axios
+      .get(`/api/project`, {
+        headers: headers,
+      }, { id })
+      .then((response) => {
+        if (response.data.flag) {
+          setViewData(response.data.data);
+        } else {
+          toast.error(response.data.message)
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [authToken]);
+
+  const deleteApi = (id) => {
+    const headers = {
+      "Content-Type": "application/json",
+      token: authToken,
+    };
+    axios
+      .delete(`/api/project/delete`, {
+        headers: headers,
+      }, { id })
+      .then((response) => {
+        if (response.data.flag) {
+          setDeleteOpen(false);
+          toast.success(response.data.message);
+          filterList();
+        } else {
+          toast.error(response.data.message)
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleViewOpen = useCallback((id) => {
+    setViewOpen(true);
+    setViewData(pageState.data.filter(v => v.timesheet_id == id)[0])
+  }, [pageState]);
+
+  const handleViewClose = () => {
+    setViewOpen(false);
+    setViewData({});
+  };
+
+  const handleEditOpen = useCallback((id) => {
+    setEditOpen(true);
+    viewApi(id);
+  }, [viewApi]);
+
+  const handleEditClose = () => {
+    setEditOpen(false);
+  };
+
+  const handleDeleteOpen = useCallback((id) => {
+    setDeleteOpen(true);
+    setViewData(pageState.data.filter(v => v.timesheet_id == id)[0])
+  }, [pageState]);
+
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+    setViewData({});
+  };
+
   useEffect(() => {
     getProjectList();
   }, [])
@@ -121,6 +188,47 @@ function TimesheetTable() {
     console.log('pageState', pageState.page, pageState.limit)
     filterList();
   }, [pageState.page, pageState.limit])
+
+
+  const columns = useMemo(
+    () => [
+      { field: 'timesheet_date', headerName: 'Date', width: 60, flex: 1 },
+      { field: 'project', headerName: 'Project Name', valueGetter: (params) => params.row.project.project_name, width: 60, flex: 1 },
+      { field: 'timesheet_title', headerName: 'Title', width: 100, flex: 1 },
+      { field: 'timesheet_estimation', headerName: 'Estimation', width: 50, flex: 1 },
+      { field: 'timesheet_billable_type', headerName: 'Billable', width: 60, flex: 1 },
+      { field: 'user', headerName: 'User', valueGetter: (params) => params.row.user.first_name, width: 100, flex: 1 },
+      {
+        field: "actions",
+        headerName: "Actions",
+        type: "actions",
+        width: 100,
+        getActions: (params) => [
+          <GridActionsCellItem
+            icon={<Visibility />}
+            label="View"
+            title="View"
+            key={params.row.timesheet_id}
+            onClick={() => handleViewOpen(params.row.timesheet_id)}
+          />,
+          <GridActionsCellItem
+            icon={<BorderColor />}
+            label="Edit"
+            title="Edit"
+            key={params.timesheet_id}
+            onClick={() => handleEditOpen(params.timesheet_id)}
+          />,
+          <GridActionsCellItem
+            icon={<Delete />}
+            label="Delete"
+            title="Delete"
+            key={params.timesheet_id}
+            onClick={() => handleDeleteOpen(params.timesheet_id)}
+          />,
+        ],
+        width: 100, flex: 1
+      },
+    ], [handleViewOpen, handleEditOpen, handleDeleteOpen]);
 
   return (
     <>
@@ -227,7 +335,7 @@ function TimesheetTable() {
           height: 400,
           width: '100%',
           '& .MuiDataGrid-columnHeaders': {
-            backgroundColor: '#000033',
+            backgroundColor: 'var(--theme-color)',
             color: '#fff'
           },
           '& .MuiDataGrid-columnHeaders .MuiCheckbox-root': {
@@ -240,6 +348,7 @@ function TimesheetTable() {
       >
         <DataGrid
           checkboxSelection
+          disableColumnSelector
           columns={columns}
           rows={pageState.data}
           rowCount={pageState.total}
@@ -258,6 +367,7 @@ function TimesheetTable() {
         />
       </Box>
       <NewTask open={open} setOpen={setOpen} />
+      <ViewTask open={viewOpen} setOpen={setViewOpen} data={viewData} />
     </>
   );
 }
