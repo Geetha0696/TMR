@@ -1,6 +1,14 @@
-.addtask {
-    background-color: black;
-    color: white;
+.button {
+    margin: 0 8px !important;
+    color: #fff !important;
+    background-color: #000033 !important;
+    padding: 10px !important;
+    min-width: auto !important;
+    border-radius: 50% !important;
+}
+
+.button:hover {
+    background-color: #000066 !important;
 }
 
 .modalBox {
