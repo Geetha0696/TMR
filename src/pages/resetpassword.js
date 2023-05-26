@@ -47,7 +47,7 @@ const ResetPassword = () => {
       .then((response) => {
         if (response.data.flag) {
           toast.success(response.data.message);
-          router.push('/')
+          router.push('/login')
         } else {
           toast.error(response.data.message)
         }

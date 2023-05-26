@@ -25,7 +25,6 @@ const ForgotPassword = () => {
   });
 
   const handleSubmit = (value) => {
-    console.log(value)
     const userData = {
       email: value.email,
     }

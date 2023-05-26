@@ -4,12 +4,13 @@ import style from '@/styles/global.module.css'
 
 const NewTask = (props) => {
     const { open, setOpen, title, children, size } = props
+    var defaulSize = size || 900;
 
     return (
         <Backdrop open={open} TransitionComponent={Fade} transitionDuration={600} sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
             <Box className={style.modalBox}>
                 <Grow in={open} {...(open ? { timeout: 600 } : {})}>
-                    <Box sx={{ width: { xs: (size || 900) - 600, sm: (size || 900) - 300, md: size || 900 } }} className={style.modalBoxInner}>
+                    <Box sx={{ width: { xs: Math.floor(defaulSize / 3), sm: Math.floor(defaulSize - (defaulSize / 3)), md: defaulSize } }} className={style.modalBoxInner}>
                         <Box className={style.modalHeader}>
                             <Typography component='h3'>{title}</Typography>
                             <Close onClick={() => setOpen(false)} />

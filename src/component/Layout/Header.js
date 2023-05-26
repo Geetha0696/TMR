@@ -16,7 +16,7 @@ export default function Header(props) {
 
   const [anchorElNav, setAnchorElNav] = useState(false);
   const [anchorElUser, setAnchorElUser] = useState('');
-  const { push, pathname } = useRouter()
+  const router = useRouter()
   const dispatch = useDispatch()
   const { authToken } = useSelector((state) => state.auth)
 
@@ -48,7 +48,6 @@ export default function Header(props) {
 
     axios.post("/api/auth/logout", {}, config)
       .then((response) => {
-        console.log(response)
         if (response.data.flag) {
           toast.success(response.data.message);
           dispatch(removeToken());
@@ -61,7 +60,6 @@ export default function Header(props) {
       .catch((error) => {
         console.error(error);
       });
-    push('/')
   }
 
   return (
@@ -100,7 +98,7 @@ export default function Header(props) {
                             <ListItemIcon>
                               {page.icon}
                             </ListItemIcon>
-                            <Link href={page.link} className={`${style.menulist} ${pathname === page.link ? style.active : ''}`} onClick={() => setAnchorElNav(false)}>{page.name}</Link>
+                            <Link href={page.link} className={`${style.menulist} ${router.pathname === page.link ? style.active : ''}`} onClick={() => setAnchorElNav(false)}>{page.name}</Link>
                           </ListItemButton>
                         </ListItem>
                       ))}
@@ -115,7 +113,7 @@ export default function Header(props) {
               <Grid item xs={10} sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, alignItems: 'center' }}>
 
                 {pages.map((page, key) => (
-                  <Link key={key} href={page.link} className={`${style.menulist} ${pathname === page.link ? style.active : ''}`}>{page.icon}<span style={{ marginLeft: '5px' }}>{page.name}</span></Link>
+                  <Link key={key} href={page.link} className={`${style.menulist} ${router.pathname === page.link ? style.active : ''}`}>{page.icon}<span style={{ marginLeft: '5px' }}>{page.name}</span></Link>
                 ))}
               </Grid>
 
