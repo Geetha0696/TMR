@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Box, Grid, Typography, TextField, Autocomplete, Button, Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
+import { Box, Grid, Typography, TextField, Autocomplete, Button, Accordion, AccordionSummary, AccordionDetails, Stack } from '@mui/material';
 import { Search, Refresh, ExpandMore, Add, Visibility, BorderColor, Delete } from '@mui/icons-material';
 import { DataGrid, GridActionsCellItem } from '@mui/x-data-grid';
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
@@ -11,6 +11,7 @@ import axios from '@/utils/axios'
 import { YYYYMMDD } from "@/utils/common";
 import NewTask from './NewTask';
 import ViewTask from './ViewTask';
+import Modal from '../Modal'
 import style from './style.module.css'
 
 function TimesheetTable() {
@@ -44,6 +45,14 @@ function TimesheetTable() {
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [viewData, setViewData] = useState({});
 
+  useEffect(() => {
+    getProjectList();
+  }, [])
+
+  useEffect(() => {
+    filterList();
+  }, [pageState.page, pageState.limit])
+
   const filterList = useCallback(() => {
     let { page, limit } = pageState
     const { title, project, billable, start_date, end_date } = filterFormData;
@@ -61,7 +70,8 @@ function TimesheetTable() {
       start_date: YYYYMMDD(start_date),
       end_date: YYYYMMDD(end_date),
       page: page + 1,
-      limit
+      limit,
+      order: "date_desc",
     }
     axios
       .post(`/api/timesheet/list`, request, {
@@ -110,12 +120,12 @@ function TimesheetTable() {
   const viewApi = useCallback((id) => {
     const headers = {
       "Content-Type": "application/json",
-      token: authToken,
+      'Authorization': 'Bearer ' + authToken
     };
     axios
-      .get(`/api/project`, {
+      .get(`/api/timesheet`, { id }, {
         headers: headers,
-      }, { id })
+      })
       .then((response) => {
         if (response.data.flag) {
           setViewData(response.data.data);
@@ -131,12 +141,12 @@ function TimesheetTable() {
   const deleteApi = (id) => {
     const headers = {
       "Content-Type": "application/json",
-      token: authToken,
+      'Authorization': 'Bearer ' + authToken
     };
     axios
-      .delete(`/api/project/delete`, {
+      .post(`/api/timesheet/delete`, { id }, {
         headers: headers,
-      }, { id })
+      })
       .then((response) => {
         if (response.data.flag) {
           setDeleteOpen(false);
@@ -156,18 +166,19 @@ function TimesheetTable() {
     setViewData(pageState.data.filter(v => v.timesheet_id == id)[0])
   }, [pageState]);
 
-  const handleViewClose = () => {
-    setViewOpen(false);
+  const handleViewClose = (flag) => {
+    setViewOpen(flag);
     setViewData({});
   };
 
   const handleEditOpen = useCallback((id) => {
     setEditOpen(true);
-    viewApi(id);
+    setViewData(pageState.data.filter(v => v.timesheet_id == id)[0])
   }, [viewApi]);
 
-  const handleEditClose = () => {
-    setEditOpen(false);
+  const handleEditClose = (flag) => {
+    setEditOpen(flag);
+    setViewData({});
   };
 
   const handleDeleteOpen = useCallback((id) => {
@@ -179,15 +190,6 @@ function TimesheetTable() {
     setDeleteOpen(false);
     setViewData({});
   };
-
-  useEffect(() => {
-    getProjectList();
-  }, [])
-
-  useEffect(() => {
-    console.log('pageState', pageState.page, pageState.limit)
-    filterList();
-  }, [pageState.page, pageState.limit])
 
 
   const columns = useMemo(
@@ -216,15 +218,15 @@ function TimesheetTable() {
             label="Edit"
             title="Edit"
             key={params.timesheet_id}
-            onClick={() => handleEditOpen(params.timesheet_id)}
+            onClick={() => handleEditOpen(params.row.timesheet_id)}
           />,
           <GridActionsCellItem
             icon={<Delete />}
             label="Delete"
             title="Delete"
             key={params.timesheet_id}
-            onClick={() => handleDeleteOpen(params.timesheet_id)}
-          />,
+            onClick={() => handleDeleteOpen(params.row.timesheet_id)}
+          />
         ],
         width: 100, flex: 1
       },
@@ -366,8 +368,36 @@ function TimesheetTable() {
           sx={{ background: "#fff" }}
         />
       </Box>
-      <NewTask open={open} setOpen={setOpen} projectList={projectList} />
-      <ViewTask open={viewOpen} setOpen={setViewOpen} data={viewData} />
+      <NewTask open={open} setOpen={setOpen} filterList={filterList} />
+      <ViewTask open={viewOpen} setOpen={handleViewClose} data={viewData} />
+
+      <Modal open={deleteOpen} setOpen={setDeleteOpen} title="Delete Task" size={600}>
+        <Box sx={{ fontSize: '18px', fontWeight: 400 }}>Are You Sure Want To Delete ?</Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "end",
+            padding: "20px 45px",
+          }}
+        >
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => deleteApi(viewData.timesheet_id)}
+            >
+              Yes
+            </Button>
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={handleDeleteClose}
+            >
+              No
+            </Button>
+          </Stack>
+        </Box>
+      </Modal>
     </>
   );
 }
