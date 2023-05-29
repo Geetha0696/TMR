@@ -126,7 +126,7 @@ const NewTask = (props) => {
         <Modal {...props} title="New Task" size={800}>
             <form onSubmit={formik.handleSubmit}>
                 <Grid container spacing={2}>
-                    <Grid item sm={3} >
+                    <Grid item sm={6} md={3} >
                         <Autocomplete
                             options={estimation}
                             onChange={(event, newValue) => {
@@ -144,9 +144,10 @@ const NewTask = (props) => {
                             }
                             sx={{ fontSize: "5px", mb: 1, width: '100%' }}
                             size='small'
+                            style={{ minHeight: '65px' }}
                         />
                     </Grid>
-                    <Grid item sm={3} >
+                    <Grid item sm={6} md={3} >
                         <Autocomplete
                             options={projectList}
                             getOptionLabel={(option) => option.name}
@@ -162,10 +163,11 @@ const NewTask = (props) => {
                             />}
                             sx={{ fontSize: "8px", mb: 2, width: '100%' }}
                             size='small'
+                            style={{ minHeight: '65px' }}
 
                         />
                     </Grid>
-                    <Grid item sm={3} >
+                    <Grid item sm={6} md={3} >
                         <Autocomplete
                             options={BillableOptions}
                             getOptionLabel={(option) => option.label}
@@ -181,10 +183,11 @@ const NewTask = (props) => {
                             />}
                             sx={{ fontSize: "8px", mb: 2, width: '100%' }}
                             size='small'
+                            style={{ minHeight: '65px' }}
 
                         />
                     </Grid>
-                    <Grid item sm={3} >
+                    <Grid item sm={6} md={3} >
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
                             <DatePicker
                                 label="Date"
@@ -219,6 +222,7 @@ const NewTask = (props) => {
                         error={formik.touched.title && Boolean(formik.errors.title)}
                           helperText={formik.touched.title && formik.errors.title}
                         size="small"
+                        style={{ minHeight: '65px' }}
                     />
                 </Grid>
                 < Grid item sm={12}  >
