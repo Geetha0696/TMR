@@ -59,8 +59,11 @@ const Viewtask = (props) => {
     }, [props.data, authToken]);
 
     useEffect(() => {
-        getData();
-    }, [props.data])
+        if (props.open) {
+            setViewData([]);
+            getData();
+        }
+    }, [props.open])
 
     return (
         <Modal {...props} title="View Task" size={800}>
