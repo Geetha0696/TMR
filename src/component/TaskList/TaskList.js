@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import axios from '@/utils/axios'
 import { YYYYMMDD } from "@/utils/common";
 import NewTask from './NewTask';
+import EditTask from './EditTask';
 import ViewTask from './ViewTask';
 import Modal from '../Modal'
 import style from './style.module.css'
@@ -65,7 +66,7 @@ function TimesheetTable() {
     setPageState((old) => ({ ...old, isLoading: true }));
     const request = {
       title,
-      project_id: project ? project.id : null,
+      project_id: project ? project.project_id : null,
       billable: billable ? billable.value : "",
       start_date: YYYYMMDD(start_date),
       end_date: YYYYMMDD(end_date),
@@ -123,7 +124,7 @@ function TimesheetTable() {
       'Authorization': 'Bearer ' + authToken
     };
     axios
-      .get(`/api/timesheet`, { id }, {
+      .post(`/api/timesheet`, { id }, {
         headers: headers,
       })
       .then((response) => {
@@ -174,7 +175,8 @@ function TimesheetTable() {
   const handleEditOpen = useCallback((id) => {
     setEditOpen(true);
     setViewData(pageState.data.filter(v => v.timesheet_id == id)[0])
-  }, [viewApi]);
+    console.log(id, pageState.data.filter(v => v.timesheet_id == id)[0])
+  }, []);
 
   const handleEditClose = (flag) => {
     setEditOpen(flag);
@@ -217,14 +219,14 @@ function TimesheetTable() {
             icon={<BorderColor />}
             label="Edit"
             title="Edit"
-            key={params.timesheet_id}
+            key={params.row.timesheet_id}
             onClick={() => handleEditOpen(params.row.timesheet_id)}
           />,
           <GridActionsCellItem
             icon={<Delete />}
             label="Delete"
             title="Delete"
-            key={params.timesheet_id}
+            key={params.row.timesheet_id}
             onClick={() => handleDeleteOpen(params.row.timesheet_id)}
           />
         ],
@@ -252,7 +254,7 @@ function TimesheetTable() {
         <AccordionDetails>
 
           <Grid container spacing={2}>
-            <Grid item xs={6} md={2}>
+            <Grid item xs={6} sm={4} md={2}>
               <TextField
                 value={filterFormData.title || ""}
                 label="Title"
@@ -262,7 +264,7 @@ function TimesheetTable() {
                 onChange={(e) => setFilterFormData({ ...filterFormData, title: e.target.value })}
               />
             </Grid>
-            <Grid item xs={6} md={2}>
+            <Grid item xs={6} sm={4} md={2}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="From Date"
@@ -281,7 +283,7 @@ function TimesheetTable() {
                 />
               </LocalizationProvider>
             </Grid>
-            <Grid item xs={6} md={2}>
+            <Grid item xs={6} sm={4} md={2}>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
                   label="To Date"
@@ -295,7 +297,7 @@ function TimesheetTable() {
                 />
               </LocalizationProvider>
             </Grid>
-            <Grid item xs={6} md={2}>
+            <Grid item xs={6} sm={4} md={2}>
               <Autocomplete
                 options={BillableOptions}
                 getOptionLabel={(option) => option.label}
@@ -308,10 +310,10 @@ function TimesheetTable() {
                 }}
               />
             </Grid>
-            <Grid item xs={6} md={2}>
+            <Grid item xs={6} sm={4} md={2}>
               <Autocomplete
                 options={projectList}
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => option.project_name}
                 renderInput={(params) => <TextField {...params} label="Project" />}
                 value={filterFormData.project}
                 sx={{ fontSize: "8px", mb: 2, width: '100%' }}
@@ -321,7 +323,7 @@ function TimesheetTable() {
                 }}
               />
             </Grid>
-            <Grid item xs={6} md={2} sx={{ textAlign: 'center' }}>
+            <Grid item xs={6} sm={4} md={2} sx={{ textAlign: 'center' }}>
               <Button variant="contained" title="Search" onClick={() => filterList()} className={style.button}>
                 <Search />
               </Button>
@@ -369,6 +371,7 @@ function TimesheetTable() {
         />
       </Box>
       <NewTask open={open} setOpen={setOpen} filterList={filterList} />
+      <EditTask open={editOpen} setOpen={handleEditClose} data={viewData} filterList={filterList} />
       <ViewTask open={viewOpen} setOpen={handleViewClose} data={viewData} />
 
       <Modal open={deleteOpen} setOpen={setDeleteOpen} title="Delete Task" size={600}>

@@ -15,10 +15,12 @@ import { YYYYMMDD } from "@/utils/common";
 import style from './style.module.css'
 import Modal from '../Modal'
 
-const NewTask = (props) => {
+
+const EditTask = (props) => {
     const { authToken } = useSelector((state) => state.auth)
     const [projectList, setProjectList] = useState([]);
     const [estimations, setEstimations] = useState([])
+    const [viewData, setViewData] = useState({});
 
     const BillableOptions = [
         { label: 'Billable', value: "billable" },
@@ -70,21 +72,60 @@ const NewTask = (props) => {
             formik.resetForm()
     }, [props.open])
 
+    useEffect(() => {
+        if (props.open) {
+            setViewData({});
+            getData();
+        }
+    }, [props.open])
+
+    const getData = useCallback((id) => {
+        if (props.data) {
+            const headers = {
+                "Content-Type": "application/json",
+                'Authorization': 'Bearer ' + authToken
+            };
+            axios
+                .post(`/api/timesheet`, { id: props.data.timesheet_id }, {
+                    headers: headers,
+                })
+                .then((response) => {
+                    if (response.data.flag) {
+                        const { timesheet_date, project, timesheet_estimation, timesheet_billable_type, timesheet_title, timesheet_description } = response.data.data;
+
+                        formik.setFieldValue("date", new Date(timesheet_date))
+                        formik.setFieldValue("project", project)
+                        formik.setFieldValue("estimation", estimations.filter(v => v.value == timesheet_estimation)[0])
+                        formik.setFieldValue("billable", BillableOptions.filter(v => v.value == timesheet_billable_type)[0])
+                        formik.setFieldValue("title", timesheet_title)
+                        formik.setFieldValue("description", timesheet_description)
+
+                        setViewData(response.data.data);
+                    } else {
+                        toast.error(response.data.message)
+                    }
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+    }, [props.data, authToken]);
+
     const handleSubmit = (value) => {
         const userData = {
+            id: viewData.timesheet_id,
             project_id: value.project.project_id,
             title: value.title,
             description: value.description,
             date: YYYYMMDD(value.date),
             billable: value.billable.value,
-            estimation: value.estimation.value,
-            status: true
+            estimation: value.estimation.value
         }
         const headers = {
             "Content-Type": "application/json",
             'Authorization': 'Bearer ' + authToken
         };
-        axios.post("/api/timesheet/create", userData, {
+        axios.post("/api/timesheet/update", userData, {
             headers: headers,
         })
             .then((response) => {
@@ -93,6 +134,7 @@ const NewTask = (props) => {
                     props.setOpen(false)
                     props.filterList()
                     formik.resetForm()
+                    setViewData({});
                 } else {
                     toast.error(response.data.message)
                 }
@@ -126,7 +168,7 @@ const NewTask = (props) => {
     }, [authToken]);
 
     return (
-        <Modal {...props} title="New Task" size={800}>
+        <Modal {...props} title="Edit Task" size={800}>
             <form onSubmit={formik.handleSubmit}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6} md={3}>
@@ -238,4 +280,4 @@ const NewTask = (props) => {
     )
 }
 
-export default NewTask
+export default EditTask
